@@ -9,6 +9,10 @@ product_post_args= reqparse.RequestParser()
 product_post_args.add_argument("name", type=str,help="Product name is required", required=True)
 product_post_args.add_argument("price", type=str ,help="Product price is required", required=True)
 
+product_put_args= reqparse.RequestParser()
+# product_post_args.add_argument("Product code", type=int,help="Product code is required", required=True)
+product_put_args.add_argument("name", type=str,help="Product name ", )
+product_put_args.add_argument("price", type=str ,help="Product price ", )
 
 products =[ 
 			 {"name":"Lavender heart", "price":"9.25" , "id":1},
@@ -46,11 +50,17 @@ class Product (Resource):
 		# return{product_id:args}	
 		return products, 200	
 	def put (self,product_id):
-		args=product_post_args.parse_args()
+		args=product_put_args.parse_args()
 		if_product_dont_exist(product_id)
 		for product in products:
 				if product["id"]==product_id:
-					product.update(args)
+					# product.update(args)
+					if "name" in args and args['name'] is not None :
+						product['name']=args['name']
+						print(args)
+						print(product)
+					if "price" in args and args['price'] is not None:
+						product['price']=args['price']
 				
 		return products	
 	def delete (self,product_id):
@@ -84,12 +94,8 @@ def home_view():
 
 @app.route("/v1/products")
 def get_products():
-	#initialize products with get initialize 
-	products =[ 
-			 {"name":"Lavender heart", "price":"9.25" , "id":1},
-			 {"name":"Personalised cufflinks", "price":"45.00", "id":2},
-			 {"name":"Kids T-shirt", "price":"19.95", "id":3},		
-		  ]
+	
+
 
 	dump=json.dumps(products) #list to json
 	return dump
