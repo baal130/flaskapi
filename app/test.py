@@ -1,5 +1,6 @@
 import requests
 import json
+
 BASE= "http://127.0.0.1:5000/"
 # BASE="https://flaskapi-zs.herokuapp.com/"
 # response = requests.post(BASE + "v1/product/1",{"name": "First","price":10})
@@ -13,9 +14,9 @@ BASE= "http://127.0.0.1:5000/"
 # print(response)
 # print(response.json())
 
-response = requests.post(BASE + "v1/product",{"name": "First","price":10})
+# response = requests.post(BASE + "v1/product",{"name": "First","price":10})
 # response = requests.post(BASE + "v1/product/1",{"name": "First","price":10})
-# response = requests.get(BASE + "v1/product/8")
+response = requests.get(BASE + "v1/product/1")
 
 
 print(response.json())

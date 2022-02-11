@@ -1,7 +1,7 @@
-from flask import Flask
-import json
+from app import app
+
+import json,os
 from flask_restful import Api, Resource , reqparse, abort
-app=Flask(__name__)
 api=Api(app)
 
 product_post_args= reqparse.RequestParser()
@@ -45,7 +45,7 @@ class Product (Resource):
 		if_product_already_exist(product_id)
 		args["id"]=product_id
 		print(args)
-		#products[product_id]=args
+		
 		products.append(args)
 		# return{product_id:args}	
 		return products, 200	
@@ -85,11 +85,6 @@ class ProductCreate (Resource):
 		return products, 200
 api.add_resource(ProductCreate,"/v1/product") 
 api.add_resource(Product,"/v1/product/<int:product_id>") #routing for one or more HTTP methods for a given URL
-
-# api.add_resource(Product,"/v1/product")
-@app.route("/")
-def home_view():
-	return "<h1>Hi</h1>"
 
 
 @app.route("/v1/products")
