@@ -32,8 +32,8 @@ class Product (Resource):
 	def get(self,product_id):
 		# return( {"data":"hi"})
 		product=ProductDB.query.filter_by(id=product_id).first()
-		print("put")
-		print(product)
+		if not product:
+			abort(404,message="product don't exist use post to create")
 		return product
 
 
@@ -85,13 +85,19 @@ class ProductCreate (Resource):
 api.add_resource(ProductCreate,"/v1/product") 
 api.add_resource(Product,"/v1/product/<int:product_id>") #routing for one or more HTTP methods for a given URL
 
-
-@app.route("/v1/products")
 @marshal_with(resource_field)
-def get_products():
-	products=ProductDB.query.filter_by(id=1).first()
+def serialize_product(self):
+	return self
+@app.route("/v1/products")
 
-	print(products)
-	return products
+def get_products():
+	products=ProductDB.query.all()
+	l=[]
+	for product in products:
+		l.append(serialize_product(product))
+	print(l)
+	dump=json.dumps(l) #list to json
+	print(dump)
+	return dump
 	
 	#expected json array [{},{}] type str
